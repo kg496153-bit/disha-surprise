@@ -129,19 +129,31 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
 </figure>
  </div>
 </section>
+
 <section id="song" class="photo-section">
-  <div class="section-head"><div class="eyebrow">press play when you feel like it</div><h2>A little Hindi romance 🎶</h2><p>For the late-night chats and the miles between us.</p></div>
+  <div class="section-head">
+    <div class="eyebrow">press play when you feel like it</div>
+    <h2>A little Hindi romance 🎶</h2>
+    <p>For the late-night chats and the miles between us.</p>
+  </div>
+
   <div class="music-box">
     <div class="disc">♫</div>
     <h3 style="color:var(--pink2);margin:0 0 8px">A song for Disha</h3>
-    <p>I added the exact song link you sent. Press play whenever you want a little music with the surprise. 💗</p>
-    <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;margin:20px auto;max-width:640px;border:1px solid #ff8fc855">
-      <iframe src="https://www.youtube-nocookie.com/embed/05LodJswL6s" title="Romantic Hindi song for Disha" style="position:absolute;inset:0;width:100%;height:100%;border:0" loading="eager" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-    <div class="music-actions"><a class="btn secondary" href="https://youtu.be/05LodJswL6s" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Open on YouTube ♡</a></div>
-    <div class="hint">The song won't autoplay; Disha can press play herself. Some videos may restrict embedded playback, so the YouTube link is there as a backup.</div>
+    <p>A little song for you, Disha. Press play and think of me. 💗</p>
+
+    <audio id="loveSong" controls preload="metadata"
+           style="display:block;width:100%;max-width:500px;margin:20px auto;">
+      <source src="tera_hone_laga_hoon_45sec.mp3" type="audio/mpeg">
+      Your browser does not support audio playback.
+    </audio>
+
+    <div class="hint">A little song for you, Disha ❤️</div>
   </div>
 </section>
+
+<section id="letter">
+
 
 <section id="letter">
     <div class="section-head"><div class="eyebrow">a note just for you</div><h2>A little letter 💌</h2><p>Something I wanted to say without making it a big thing.</p></div>
