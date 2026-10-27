@@ -185,38 +185,9 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
     </div>
   </section>
   <footer class="footer">A small corner of the internet, made for <strong>Disha</strong> by <strong>Kunal</strong> ♡</footer>
-</div>
+</div>        
 <div class="toast" id="toast">Sending you a little love ♡</div>
 <script>
-const starHost=document.getElementById('stars');
-for(let i=0;i<85;i++){const s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=(Math.random()*3)+'s';s.style.opacity=(.2+Math.random()*.7);starHost.appendChild(s)}
-
-  
-document.getElementById('openBtn').addEventListener('click', () => {
-  document.getElementById('startOverlay').classList.add('gone');
-  document.body.style.overflow = '';
-
-  const song = document.getElementById('loveSong');
-
-  if (song) {
-    song.currentTime = 0;
-    song.play().catch(error => {
-      console.log('Song playback was blocked:', error);
-    });
-  }
-});
-
-
-elector('iframe[src*="youtube-nocookie.com/embed"]');
-  if (player) {
-    player.src = 'https://www.youtube-nocookie.com/embed/05LodJswL6s?autoplay=1&playsinline=1';
-  }
-});
-document.querySelectorAll('.reasons .card').forEach(card=>{const toggle=()=>{card.classList.toggle('open');card.setAttribute('aria-expanded',card.classList.contains('open')?'true':'false')};card.addEventListener('click',toggle);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}})});
-document.getElementById('revealBtn').addEventListener('click',()=>{document.getElementById('secret').classList.add('show');document.getElementById('revealBtn').textContent='Surprise revealed ♡';document.getElementById('revealBtn').disabled=true;confettiHearts()});
-function confettiHearts(){for(let i=0;i<24;i++){const h=document.createElement('span');h.textContent=['♡','♥','✦','💗'][Math.floor(Math.random()*4)];h.style.position='fixed';h.style.zIndex='40';h.style.left=Math.random()*100+'vw';h.style.bottom='-30px';h.style.fontSize=(14+Math.random()*20)+'px';h.style.color=['#ff8fc8','#c9b7ff','#ffc2e2'][i%3];h.style.pointerEvents='none';document.body.appendChild(h);const dx=(Math.random()-.5)*180;const anim=h.animate([{transform:'translate(0,0) rotate(0deg)',opacity:1},{transform:`translate(${dx}px,-${window.innerHeight+100}px) rotate(${Math.random()*500}deg)`,opacity:0}],{duration:1800+Math.random()*1300,easing:'ease-out'});anim.onfinish=()=>h.remove()}}
-document.getElementById('heartBtn').addEventListener('click',()=>{confettiHearts();const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)});
-</script>
 
 <div class="photo-modal" id="photoModal" role="dialog" aria-modal="true" aria-label="Disha photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><img id="modalPhoto" src="" alt="Enlarged photo of Disha"></div>
 <script>
@@ -228,8 +199,81 @@ document.querySelectorAll('.photo-card').forEach(card=>{
 const modal=document.getElementById('photoModal');
 document.getElementById('closePhoto').addEventListener('click',()=>modal.classList.remove('open'));
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});
+document
+<script>
+const starHost = document.getElementById('stars');
+
+if (starHost) {
+  for (let i = 0; i < 85; i++) {
+    const s = document.createElement('i');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.opacity = 0.2 + Math.random() * 0.7;
+    starHost.appendChild(s);
+  }
+}
+
+const openBtn = document.getElementById('openBtn');
+
+if (openBtn) {
+  openBtn.addEventListener('click', () => {
+    const overlay = document.getElementById('startOverlay');
+
+    if (overlay) {
+      overlay.classList.add('gone');
+    }
+
+    document.body.style.overflow = '';
+
+    const song = document.getElementById('loveSong');
+
+    if (song) {
+      song.currentTime = 0;
+
+      // Clear any previous timer
+      if (song.stopTimer) {
+        clearTimeout(song.stopTimer);
+      }
+
+      song.play()
+        .then(() => {
+          song.stopTimer = setTimeout(() => {
+            song.pause();
+            song.currentTime = 0;
+          }, 30000);
+        })
+        .catch(error => {
+          console.log('Song playback failed:', error);
+        });
+    }
+  });
+}
+```html
+<script>
+const modal = document.getElementById('photoModal');
+const closePhoto = document.getElementById('closePhoto');
+
+if (modal && closePhoto) {
+  closePhoto.addEventListener('click', () => {
+    modal.classList.remove('open');
+  });
+
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      modal.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      modal.classList.remove('open');
+    }
+  });
+}
 </script>
 
 </body>
 </html>
+```
