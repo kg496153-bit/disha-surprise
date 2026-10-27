@@ -187,93 +187,118 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
   <footer class="footer">A small corner of the internet, made for <strong>Disha</strong> by <strong>Kunal</strong> ♡</footer>
 </div>        
 <div class="toast" id="toast">Sending you a little love ♡</div>
+<div class="photo-modal" id="photoModal" role="dialog"
+     aria-modal="true" aria-label="Disha photo viewer">
+  <button id="closePhoto" type="button" aria-label="Close photo">×</button>
+  <img id="modalPhoto" src="" alt="Enlarged photo of Disha">
+</div>
+
 <script>
+document.addEventListener('DOMContentLoaded', () => {
 
-<div class="photo-modal" id="photoModal" role="dialog" aria-modal="true" aria-label="Disha photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><img id="modalPhoto" src="" alt="Enlarged photo of Disha"></div>
-<script>
-document.querySelectorAll('.photo-card').forEach(card=>{
-  const open=()=>{const img=card.querySelector('img');document.getElementById('modalPhoto').src=img.src;document.getElementById('photoModal').classList.add('open')};
-  card.addEventListener('click',open);
-  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
-});
-const modal=document.getElementById('photoModal');
-document.getElementById('closePhoto').addEventListener('click',()=>modal.classList.remove('open'));
-modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
-document
-<script>
-const starHost = document.getElementById('stars');
+  const starHost = document.getElementById('stars');
 
-if (starHost) {
-  for (let i = 0; i < 85; i++) {
-    const s = document.createElement('i');
-    s.className = 'star';
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top = Math.random() * 100 + '%';
-    s.style.animationDelay = Math.random() * 3 + 's';
-    s.style.opacity = 0.2 + Math.random() * 0.7;
-    starHost.appendChild(s);
-  }
-}
-
-const openBtn = document.getElementById('openBtn');
-
-if (openBtn) {
-  openBtn.addEventListener('click', () => {
-    const overlay = document.getElementById('startOverlay');
-
-    if (overlay) {
-      overlay.classList.add('gone');
+  if (starHost && !starHost.children.length) {
+    for (let i = 0; i < 85; i++) {
+      const star = document.createElement('i');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.opacity = 0.2 + Math.random() * 0.7;
+      starHost.appendChild(star);
     }
+  }
 
-    document.body.style.overflow = '';
+  // Open surprise and play MP3 for 30 seconds
+  const openBtn = document.getElementById('openBtn');
+  const overlay = document.getElementById('startOverlay');
+  const song = document.getElementById('loveSong');
+  let songStopTimer;
 
-    const song = document.getElementById('loveSong');
-
-    if (song) {
-      song.currentTime = 0;
-
-      // Clear any previous timer
-      if (song.stopTimer) {
-        clearTimeout(song.stopTimer);
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      if (overlay) {
+        overlay.classList.add('gone');
       }
 
-      song.play()
-        .then(() => {
-          song.stopTimer = setTimeout(() => {
-            song.pause();
-            song.currentTime = 0;
-          }, 30000);
-        })
-        .catch(error => {
-          console.log('Song playback failed:', error);
-        });
-    }
-  });
-}
-```html
-<script>
-const modal = document.getElementById('photoModal');
-const closePhoto = document.getElementById('closePhoto');
+      document.body.style.overflow = '';
 
-if (modal && closePhoto) {
-  closePhoto.addEventListener('click', () => {
-    modal.classList.remove('open');
+      if (song) {
+        clearTimeout(songStopTimer);
+        song.pause();
+
+        try {
+          song.currentTime = 0;
+        } catch (error) {
+          console.warn('Could not reset the song:', error);
+        }
+
+        song.play()
+          .then(() => {
+            songStopTimer = setTimeout(() => {
+              song.pause();
+              song.currentTime = 0;
+            }, 30000);
+          })
+          .catch(error => {
+            console.error('MP3 playback failed:', error);
+          });
+      }
+    });
+  } else {
+    console.error('Could not find the button with id="openBtn".');
+  }
+
+  // Open photo viewer
+  const modal = document.getElementById('photoModal');
+  const modalPhoto = document.getElementById('modalPhoto');
+  const closePhoto = document.getElementById('closePhoto');
+
+  document.querySelectorAll('.photo-card').forEach(card => {
+    const openPhoto = () => {
+      const img = card.querySelector('img');
+
+      if (!img || !modal || !modalPhoto) return;
+
+      modalPhoto.src = img.src;
+      modalPhoto.alt = img.alt || 'Enlarged photo of Disha';
+      modal.classList.add('open');
+
+      if (closePhoto) closePhoto.focus();
+    };
+
+    card.addEventListener('click', openPhoto);
+
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openPhoto();
+      }
+    });
   });
 
-  modal.addEventListener('click', event => {
-    if (event.target === modal) {
-      modal.classList.remove('open');
-    }
-  });
 
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      modal.classList.remove('open');
-    }
-  });
-}
+  const closeModal = () => {
+    if (modal) modal.classList.remove('open');
+  };
+
+  if (closePhoto) {
+    closePhoto.addEventListener('click', closeModal);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+    });
+  }
+
+});
 </script>
 
 </body>
 </html>
-```
