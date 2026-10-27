@@ -134,15 +134,19 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
   
 <div class="music-box">
   <div class="disc">♫</div>
-  <h3 style="color:var(--pink2);margin:0 0 8px">A song for Disha</h3>
+
+  <h3 style="color:var(--pink2);margin:0 0 8px">
+    A song for Disha
+  </h3>
+
   <p>A little song for you, Disha. Press play and think of me. 💗</p>
 
-  <audio id="loveSong" preload="auto" loop>
+  <audio id="loveSong" preload="metadata">
     <source src="tera_hone_laga_hoon_45sec%20(1).mp3" type="audio/mpeg">
     Your browser does not support audio playback.
   </audio>
 
-  <button onclick="document.getElementById('loveSong').play()">
+  <button id="playSongBtn" type="button">
     Play our song ❤️
   </button>
 
