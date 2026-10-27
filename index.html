@@ -196,6 +196,9 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ==========================================
+  // 1. TWINKLING STARS ✨
+  // ==========================================
   const starHost = document.getElementById('stars');
 
   if (starHost && !starHost.children.length) {
@@ -210,11 +213,124 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Open surprise and play MP3 for 30 seconds
+
+  // ==========================================
+  // 2. FLOATING HEARTS 💕
+  // ==========================================
+  let heartsContainer = document.querySelector('.hearts');
+
+  if (!heartsContainer) {
+    heartsContainer = document.createElement('div');
+    heartsContainer.className = 'hearts';
+    heartsContainer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(heartsContainer);
+  }
+
+  // Add the floating-heart animation.
+  if (!document.getElementById('floatingHeartsStyle')) {
+    const style = document.createElement('style');
+    style.id = 'floatingHeartsStyle';
+
+    style.textContent = `
+      .hearts {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .floating-heart {
+        position: absolute;
+        bottom: -45px;
+        opacity: 0;
+        line-height: 1;
+        animation: floatUp 6s linear forwards;
+        will-change: transform, opacity;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0deg) scale(.7);
+          opacity: 0;
+        }
+        10% {
+          opacity: .85;
+        }
+        80% {
+          opacity: .7;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(35deg) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .floating-heart {
+          animation-duration: 2s;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function createFloatingHeart() {
+    if (!heartsContainer) return;
+
+    const heart = document.createElement('span');
+    const heartTypes = ['♡', '♥', '💕', '💗', '💖'];
+
+    heart.className = 'floating-heart';
+    heart.textContent =
+      heartTypes[Math.floor(Math.random() * heartTypes.length)];
+
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.fontSize = (16 + Math.random() * 22) + 'px';
+    heart.style.animationDuration = (5 + Math.random() * 4) + 's';
+
+    heartsContainer.appendChild(heart);
+
+    heart.addEventListener('animationend', () => heart.remove(), {
+      once: true
+    });
+  }
+
+  // Create a gentle stream of floating hearts.
+  const heartInterval = setInterval(createFloatingHeart, 1000);
+
+  // Stop the interval if the page is being hidden for a long time.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(heartInterval);
+    }
+  });
+
+
+  // ==========================================
+  // 3. OPEN THE SURPRISE + PLAY MUSIC 💗
+  // ==========================================
   const openBtn = document.getElementById('openBtn');
   const overlay = document.getElementById('startOverlay');
   const song = document.getElementById('loveSong');
+  const playSongBtn = document.getElementById('playSongBtn');
+
   let songStopTimer;
+
+  function updateSongButton(isPlaying) {
+    if (playSongBtn) {
+      playSongBtn.textContent = isPlaying
+        ? 'Pause our song ⏸️'
+        : 'Play our song ❤️';
+    }
+  }
+
+  if (song) {
+    song.addEventListener('play', () => updateSongButton(true));
+    song.addEventListener('pause', () => updateSongButton(false));
+    song.addEventListener('ended', () => updateSongButton(false));
+  }
 
   if (openBtn) {
     openBtn.addEventListener('click', () => {
@@ -224,15 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.body.style.overflow = '';
 
+      // Play the song automatically for 30 seconds.
       if (song) {
         clearTimeout(songStopTimer);
         song.pause();
-
-        try {
-          song.currentTime = 0;
-        } catch (error) {
-          console.warn('Could not reset the song:', error);
-        }
+        song.currentTime = 0;
 
         song.play()
           .then(() => {
@@ -242,15 +354,60 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 30000);
           })
           .catch(error => {
-            console.error('MP3 playback failed:', error);
+            console.error('Could not play the song:', error);
           });
       }
+
+      // Send a few hearts when the surprise opens.
+      for (let i = 0; i < 8; i++) {
+        setTimeout(createFloatingHeart, i * 180);
+      }
     });
-  } else {
-    console.error('Could not find the button with id="openBtn".');
   }
 
-  // Open photo viewer
+
+  // ==========================================
+  // 4. THE SEPARATE MUSIC BUTTON 🎵
+  // ==========================================
+  if (playSongBtn && song) {
+    playSongBtn.addEventListener('click', () => {
+      clearTimeout(songStopTimer);
+
+      if (!song.paused) {
+        song.pause();
+        return;
+      }
+
+      song.play().catch(error => {
+        console.error('Could not play the song:', error);
+      });
+    });
+  }
+
+
+  // ==========================================
+  // 5. REASONS CARDS 🌷
+  // ==========================================
+  document.querySelectorAll('.reasons .card').forEach(card => {
+    function toggleCard() {
+      const isOpen = card.classList.toggle('open');
+      card.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    card.addEventListener('click', toggleCard);
+
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCard();
+      }
+    });
+  });
+
+
+  // ==========================================
+  // 6. PHOTO VIEWER 📸
+  // ==========================================
   const modal = document.getElementById('photoModal');
   const modalPhoto = document.getElementById('modalPhoto');
   const closePhoto = document.getElementById('closePhoto');
@@ -278,10 +435,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
-  const closeModal = () => {
+  function closeModal() {
     if (modal) modal.classList.remove('open');
-  };
+  }
 
   if (closePhoto) {
     closePhoto.addEventListener('click', closeModal);
@@ -297,8 +453,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  // ==========================================
+  // 7. REVEAL THE FINAL MESSAGE 🎁
+  // ==========================================
+  const revealBtn = document.getElementById('revealBtn');
+  const secret = document.getElementById('secret');
+
+  if (revealBtn && secret) {
+    revealBtn.addEventListener('click', () => {
+      const isVisible = secret.classList.toggle('show');
+
+      revealBtn.textContent = isVisible
+        ? 'Hide the message ♡'
+        : 'Reveal it ♡';
+
+      if (isVisible) {
+        secret.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+
+        for (let i = 0; i < 12; i++) {
+          setTimeout(createFloatingHeart, i * 150);
+        }
+      }
+    });
+  }
+
+
+  // ==========================================
+  // 8. SEND SOME HEARTS 💖
+  // ==========================================
+  const heartBtn = document.getElementById('heartBtn');
+
+  if (heartBtn) {
+    heartBtn.addEventListener('click', () => {
+      for (let i = 0; i < 24; i++) {
+        setTimeout(createFloatingHeart, i * 100);
+      }
+
+      const toast = document.getElementById('toast');
+
+      if (toast) {
+        toast.classList.add('show');
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2500);
+      }
+    });
+  }
+
 });
 </script>
-
 </body>
 </html>
