@@ -80,33 +80,27 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
     <img src="disha-photo-3.jpg" alt="Disha — featured photo" loading="lazy">
     <div class="featured-copy"><div class="eyebrow">my favourite kind of surprise</div><h3>Somehow, you make a screen feel less far away.</h3><p>Just a little photo corner to make you smile. No big speech — just you, a few memories, and a small reminder from Kunal. 💗</p><span style="color:var(--pink2)">— Kunal ♡</span></div>
   </div>
-  .photo-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-  align-items: start;
-}
+  <div class="photo-grid">
+  <figure class="photo-card">
+    <img src="disha-photo-1.jpg" alt="Disha smiling" loading="lazy">
+    <figcaption>A little smile ♡</figcaption>
+  </figure>
 
-.photo-card {
-  min-width: 0;
-  width: 100%;
-  cursor: pointer;
-}
+  <figure class="photo-card">
+    <img src="disha-photo-2.jpg" alt="Disha" loading="lazy">
+    <figcaption>Beautiful moments ♡</figcaption>
+  </figure>
 
-.photo-card img {
-  display: block;
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-  border-radius: 4px;
-}
+  <figure class="photo-card">
+    <img src="disha-photo-3.jpg" alt="Disha" loading="lazy">
+    <figcaption>A favourite view ♡</figcaption>
+  </figure>
 
-@media (max-width: 760px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-}
+  <figure class="photo-card">
+    <img src="disha-photo-4.jpg" alt="Disha" loading="lazy">
+    <figcaption>Just you ♡</figcaption>
+  </figure>
+</div>
 
 <figure class="photo-card" tabindex="0" role="button" aria-label="Open Disha photo 1">
   <img src="disha-photo-1.jpg" alt="Disha photo one" loading="lazy">
