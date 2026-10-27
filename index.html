@@ -192,10 +192,24 @@ section{padding:65px clamp(18px,6vw,80px);scroll-margin-top:72px}.section-head{t
 <script>
 const starHost=document.getElementById('stars');
 for(let i=0;i<85;i++){const s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=(Math.random()*3)+'s';s.style.opacity=(.2+Math.random()*.7);starHost.appendChild(s)}
-document.getElementById('openBtn').addEventListener('click',()=>{
+
+  
+document.getElementById('openBtn').addEventListener('click', () => {
   document.getElementById('startOverlay').classList.add('gone');
-  document.body.style.overflow='';
-  const player = document.querySelector('iframe[src*="youtube-nocookie.com/embed"]');
+  document.body.style.overflow = '';
+
+  const song = document.getElementById('loveSong');
+
+  if (song) {
+    song.currentTime = 0;
+    song.play().catch(error => {
+      console.log('Song playback was blocked:', error);
+    });
+  }
+});
+
+
+elector('iframe[src*="youtube-nocookie.com/embed"]');
   if (player) {
     player.src = 'https://www.youtube-nocookie.com/embed/05LodJswL6s?autoplay=1&playsinline=1';
   }
